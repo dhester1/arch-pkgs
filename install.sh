@@ -91,21 +91,19 @@ else
 	exit 3
 fi
 
-swap_space=$(python -c "from math import ceil; print(ceil($swap_space * 953.67431640625)))
-swap_end=$(($swap_space+500+1))MiB
+swap_end=$((swap_space*1000))
 
 dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
---yesno "$device will be formatted as GPT\n\nPartition 1:    EFI System    500 MiB\nPartition 2:    Linux swap    $swap_space MiB\nPartition 3:    ext4          Remaining\n\nContinue?\nWARNING: Selecting yes will partition the entire disk, erasing all data on it. Backup your data before proceeding."
+--yesno "\n=== WARNING ===\nProceeding will format ${device} and erase all data on that drive.\n\nPress Yes to continue, or No to back your data up first." 0 0
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
-	gdisk "$device"
-	
-	parted --script "$device" --mklabel gpt \ 
-	mkpart ESP fat32 1Mib 500MiB \
+	parted --script "$device" \
+	--mklabel gpt \ 
+	mkpart ESP fat32 1 500 \
 	set 1 boot on \
-	mkpart primary linux-swap 500MiB ${swap_end} \
+	mkpart primary linux-swap 500 ${swap_end} \
 	mkpart primary ext4 ${swap_end} 100%
 
 	part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
