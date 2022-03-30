@@ -1,3 +1,5 @@
+#!/bin/bash
+
 timedatectl set-ntp true
 sed -i "93,94s/^#//" /etc/pacman.conf
 
@@ -5,10 +7,10 @@ pacman -Sy
 pacman -S --noconfirm dialog
 clear
 
-package-server=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of package-server.localdomain?" 0 0) || exit 1
+packageServer=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of the package server?" 0 0) || exit 1
 clear
-: ${package-server:?"IP address must be provided."}
-echo "$package-server            package-server.localdomain" >> /etc/hosts
+: ${packageServer:?"IP address must be provided."}
+echo "$packageServer            package-server.localdomain" >> /etc/hosts
 
 hostname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter this machine's hostname" 0 0) || exit 1
 clear
