@@ -26,8 +26,13 @@ clear
 
 user_password=""
 root_password=""
-duplicate_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --yesno "Use the same password for root and $username?" 0 0)
-if [ ${duplicate_password} -eq 0 ]; then
+
+dialog --stdout --backtitle "Arch-Linux Installer"\
+--title "Pre-Install Config" \
+--yesno "Use the same password for root and $username?" 0 0
+$duplicate_password=$?
+clear
+if [ "$duplicate_password" -eq 0 ]; then
 	while [ 1 ]
 	do
 		user_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection" --passwordbox "Enter your password" 0 0) || exit 1
@@ -40,7 +45,7 @@ if [ ${duplicate_password} -eq 0 ]; then
 			dialog --stdtout --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
 		fi
 	done
-elif [ ${duplicate_password} -eq 1 ]; then
+elif [ "$duplicate_password" -eq 1 ]; then
 	while [ 1 ]
 	do
 		root_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection: root" --passwordbox "Enter the root password" 0 0)|| exit 1
@@ -64,7 +69,7 @@ elif [ ${duplicate_password} -eq 1 ]; then
 		fi
 	done
 else
-	exit 1
+	exit 3
 fi
 
 device=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Disk Partitioning" --menu "Select installation disk" 0 0 0 $(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop|sr" | tac)) || exit 1
@@ -73,11 +78,14 @@ clear
 exec 1> >(tee "stdout.log")
 exec 2> >(tee "stderr.log")
 
+dialog --stdout --backtitle "Arch-Linux Installer" \
+--title "Disk Partitioning" \
+--yesno "Will hibernation be used?" 0 0
+hibernation=$?
 ram=$(free --giga | awk '/Mem:/ {print $2}')
-hibernation=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Disk Partitioning" --yesno "Will hibernation be used?" 0 0) || exit 1
-if [ ${hibernation} -eq 0 ]; then
+if [ "$hibernation" -eq 0 ]; then
 	swap_space=$((int(ceil(sqrt($ram)))))
-elif [ ${hibernation} -eq 1 ]; then
+elif [ "$hibernation" -eq 1 ]; then
 	swap_space=$(($ram + int(ceil(sqrt($ram)))))
 else
 	exit 1
@@ -87,10 +95,13 @@ clear
 swap_space=$((int(ceil($swap_space * 953.67431640625))))
 swap_end=$(($swap_space+500+1))MiB
 
-confirm_format=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Disk Partitioning" --yesno "$device will be formatted as GPT\n\nPartition 1:    EFI System    500 MiB\nPartition 2:    Linux swap    $swap_space MiB\nPartition 3:    ext4          Remaining\n\nContinue?\nWARNING: Selecting yes will partition the entire disk, erasing all data on it. Backup your data before proceeding."
+dialog --stdout --backtitle "Arch-Linux Installer" \
+--title "Disk Partitioning" \
+--yesno "$device will be formatted as GPT\n\nPartition 1:    EFI System    500 MiB\nPartition 2:    Linux swap    $swap_space MiB\nPartition 3:    ext4          Remaining\n\nContinue?\nWARNING: Selecting yes will partition the entire disk, erasing all data on it. Backup your data before proceeding."
+confirm_format=$?
 clear
 
-if [ ${confirm_format} -eq 0 ]; then
+if [ "$confirm_format" -eq 0 ]; then
 	gdisk "$device"
 	
 	parted --script "$device" --mklabel gpt \ 
