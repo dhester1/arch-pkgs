@@ -91,7 +91,7 @@ else
 	exit 3
 fi
 
-swap_end=$((swap_space*1000))
+swap_end=$((swap_space*1000)+500+1)
 
 dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
@@ -99,12 +99,11 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
-	parted --script "$device" \
-	mklabel gpt \ 
-	mkpart ESP fat32 1 500 \
+	parted --script "${device}" -- mklabel gpt \ 
+	mkpart ESP fat32 1 500MB \
 	set 1 boot on \
-	mkpart primary linux-swap 500 ${swap_end} \
-	mkpart primary ext4 ${swap_end} 100%
+	mkpart primary linux-swap 500MB ${swap_end}MB \
+	mkpart primary ext4 ${swap_end}MB 100%
 
 	part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 	part_swap="$(ls ${device}* | grep -E "^${device}p?2$")"
