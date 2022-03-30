@@ -7,27 +7,27 @@ pacman -Sy
 pacman -S --noconfirm dialog
 clear
 
-packageServer=$(dialog --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of the package server?" 0 0) || exit 1
+packageServer=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of the package server?" 0 0) || exit 1
 clear
 : ${packageServer:?"IP address must be provided."}
 echo "$packageServer            package-server.localdomain" >> /etc/hosts
 
-hostname=$(dialog --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter this machine's hostname" 0 0) || exit 1
+hostname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter this machine's hostname" 0 0) || exit 1
 clear
 : ${hostname:?"Hostname cannot be empty."}
 
-fullname=$(dialog --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is your full name?" 0 0) || exit 1
+fullname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is your full name?" 0 0) || exit 1
 clear
 : ${fullname:?"Name cannot be empty."}
 
-username=$(dialog --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter your username" 0 0) || exit 1
+username=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter your username" 0 0) || exit 1
 clear
 : ${username:?"Username cannot be empty."}
 
 user_password=""
 root_password=""
 
-dialog --backtitle "Arch-Linux Installer" \
+dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Pre-Install Config" \
 --yesno "Use the same password for root and $username?" 0 0
 duplicate_password=$?
@@ -35,50 +35,50 @@ duplicate_password=$?
 if [ "$duplicate_password" -eq 0 ]; then
 	while [ 1 ]
 	do
-		user_password=$(dialog --backtitle "Arch-Linux Installer" --title "Password Selection" --passwordbox "Enter your password" --insecure 0 0) || exit 1
-		password_confirm=$(dialog --backtitle "Arch_Linux Installer" --title "Password Selection" --passwordbox "Confirm your password" --insecure 0 0) || exit 1
+		user_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection" --passwordbox "Enter your password" --insecure 0 0) || exit 1
+		password_confirm=$(dialog --stdout --backtitle "Arch_Linux Installer" --title "Password Selection" --passwordbox "Confirm your password" --insecure 0 0) || exit 1
 		
 		if [[ "$user_password" == "$password_confirm" ]]; then
 			root_password=${user_password}
 			break
 		else
-			dialog --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
+			dialog --stdout --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
 		fi
 	done
 elif [ "$duplicate_password" -eq 1 ]; then
 	while [ 1 ]
 	do
-		root_password=$(dialog --backtitle "Arch-Linux Installer" --title "Password Selection: root" --passwordbox "Enter the root password" 0 0)|| exit 1
-		password_confirm=$(dialog --backtitle "Arch-Linux Installer" --title "Confirm Password: root" --passwordbox "Confirm the password" 0 0)|| exit 1
+		root_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection: root" --passwordbox "Enter the root password" 0 0)|| exit 1
+		password_confirm=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Confirm Password: root" --passwordbox "Confirm the password" 0 0)|| exit 1
 
 		if [[ "$root_password" == "$password_confirm" ]]; then
 			break
 		else
-			dialog --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
+			dialog --stdout --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
 		fi
 	done
 	while [ 1 ]
 	do
-		user_password=$(dialog --backtitle "Arch-Linux Installer" --title "Password Selection: $username" --passwordbox "Enter the password for $username" 0 0) || exit 1
-		password_confirm=$(dialog --backtitle "Arch_Linux Installer" --title "Password Selection: $username" --passwordbox "Confirm the password" 0 0) || exit 1
+		user_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection: $username" --passwordbox "Enter the password for $username" 0 0) || exit 1
+		password_confirm=$(dialog --stdout --backtitle "Arch_Linux Installer" --title "Password Selection: $username" --passwordbox "Confirm the password" 0 0) || exit 1
 		
 		if [[ "$user_password" == "$password_confirm" ]]; then
 			break
 		else
-			dialog --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
+			dialog --stdout --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
 		fi
 	done
 else
 	exit 3
 fi
 
-device=$(dialog --backtitle "Arch-Linux Installer" --title "Disk Partitioning" --menu "Select installation disk" 0 0 0 $(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop|sr" | tac)) || exit 1
+device=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Disk Partitioning" --menu "Select installation disk" 0 0 0 $(lsblk -dplnx size -o name,size | grep -Ev "boot|rpmb|loop|sr" | tac)) || exit 1
 clear
 
 exec 1> >(tee "stdout.log")
 exec 2> >(tee "stderr.log")
 
-dialog --backtitle "Arch-Linux Installer" \
+dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
 --yesno "Will hibernation be used?" 0 0
 hibernation=$?
@@ -93,7 +93,7 @@ fi
 
 swap_end=$(((swap_space*1024)+500+1))
 
-dialog --backtitle "Arch-Linux Installer" \
+dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
 --colors \
 --yesno "\Zb\Z1=== WARNING ===\Zn\nProceeding will format ${device} and erase all data on that drive.\n\nPress Yes to continue, or No to back your data up first." 0 0
@@ -149,4 +149,4 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "$username:$user_password" | chpasswd --root /mnt
 echo "root:$root_password" | chpasswd --root /mnt
 
-dialog --backtitle "Arch-Linux Installer" --title "Installation Complete" --msgbox "Installation complete. Please examine the contents of ~/stdout.log and ~/stderr.log to ensure nothing requires your attention, and then run the command: shutdown -r now"
+dialog --stdout --backtitle "Arch-Linux Installer" --title "Installation Complete" --msgbox "Installation complete. Please examine the contents of ~/stdout.log and ~/stderr.log to ensure nothing requires your attention, and then run the command: shutdown -r now"
