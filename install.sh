@@ -35,8 +35,10 @@ duplicate_password=$?
 if [ "$duplicate_password" -eq 0 ]; then
 	while [ 1 ]
 	do
-		user_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection" --passwordbox "Enter your password" --insecure 0 0) || exit 1
-		password_confirm=$(dialog --stdout --backtitle "Arch_Linux Installer" --title "Password Selection" --passwordbox "Confirm your password" --insecure 0 0) || exit 1
+		user_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection" --insecure --passwordbox "Enter your password" 0 0) || exit 1
+		clear
+		password_confirm=$(dialog --stdout --backtitle "Arch_Linux Installer" --title "Password Selection" --insecure --passwordbox "Confirm your password" 0 0) || exit 1
+		clear
 		
 		if [[ "$user_password" == "$password_confirm" ]]; then
 			root_password=${user_password}
@@ -48,9 +50,11 @@ if [ "$duplicate_password" -eq 0 ]; then
 elif [ "$duplicate_password" -eq 1 ]; then
 	while [ 1 ]
 	do
-		root_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection: root" --passwordbox "Enter the root password" 0 0)|| exit 1
-		password_confirm=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Confirm Password: root" --passwordbox "Confirm the password" 0 0)|| exit 1
-
+		root_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection: root" --insecure --passwordbox "Enter the root password" 0 0)|| exit 1
+		clear
+		password_confirm=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Confirm Password: root" --insecure --passwordbox "Confirm the password" 0 0)|| exit 1
+		clear
+		
 		if [[ "$root_password" == "$password_confirm" ]]; then
 			break
 		else
@@ -59,8 +63,10 @@ elif [ "$duplicate_password" -eq 1 ]; then
 	done
 	while [ 1 ]
 	do
-		user_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection: $username" --passwordbox "Enter the password for $username" 0 0) || exit 1
-		password_confirm=$(dialog --stdout --backtitle "Arch_Linux Installer" --title "Password Selection: $username" --passwordbox "Confirm the password" 0 0) || exit 1
+		user_password=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Password Selection: $username" --insecure --passwordbox "Enter the password for $username" 0 0) || exit 1
+		clear
+		password_confirm=$(dialog --stdout --backtitle "Arch_Linux Installer" --title "Password Selection: $username" --insecure --passwordbox "Confirm the password" 0 0) || exit 1
+		clear
 		
 		if [[ "$user_password" == "$password_confirm" ]]; then
 			break
