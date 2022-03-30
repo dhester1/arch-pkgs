@@ -84,22 +84,20 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 hibernation=$?
 ram=$(free --giga | awk '/Mem:/ {print $2}')
 if [ "$hibernation" -eq 0 ]; then
-	swap_space=$((int(ceil(sqrt($ram)))))
+	swap_space=$(python -c "from math import ceil,sqrt; print(ceil(sqrt($ram)))")
 elif [ "$hibernation" -eq 1 ]; then
-	swap_space=$(($ram + int(ceil(sqrt($ram)))))
+	swap_space=$(python -c "from math import ceil,sqrt; print($ram+(ceil(sqrt($ram))))")
 else
 	exit 3
 fi
-clear
 
-swap_space=$((int(ceil($swap_space * 953.67431640625))))
+swap_space=$(python -c "from math import ceil; print(ceil($swap_space * 953.67431640625)))
 swap_end=$(($swap_space+500+1))MiB
 
 dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
 --yesno "$device will be formatted as GPT\n\nPartition 1:    EFI System    500 MiB\nPartition 2:    Linux swap    $swap_space MiB\nPartition 3:    ext4          Remaining\n\nContinue?\nWARNING: Selecting yes will partition the entire disk, erasing all data on it. Backup your data before proceeding."
 confirm_format=$?
-clear
 
 if [ "$confirm_format" -eq 0 ]; then
 	gdisk "$device"
