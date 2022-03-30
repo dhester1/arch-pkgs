@@ -128,7 +128,7 @@ else
 	exit 1
 fi
 
-cat >> /etc/pacman.conf <<EOF
+cat <<EOF >> /etc/pacman.conf
 [dhester-base]
 SigLevel = Optional TrustAll
 Server = http://package-server.localdomain/dhester-base/
