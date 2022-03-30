@@ -7,7 +7,7 @@ pacman -Sy
 pacman -S --noconfirm dialog
 clear
 
-dialog --stdout --backtitle "Arch-Linux Installer" --title "Welcome" --msgbox "This tool requires a custom package server hosting dhester-base. Please ensure it is turned on and accessible over the network."
+dialog --stdout --backtitle "Arch-Linux Installer" --title "Welcome" --msgbox "This tool requires a custom package server hosting dhester-base. Please ensure it is turned on and accessible over the network." 0 0
 
 packageServer=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of the package server?" 0 0) || exit 1
 clear
@@ -157,4 +157,4 @@ arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 echo "$username:$user_password" | chpasswd --root /mnt
 echo "root:$root_password" | chpasswd --root /mnt
 
-dialog --stdout --backtitle "Arch-Linux Installer" --title "Installation Complete" --msgbox "Installation complete. Please examine the contents of ~/stdout.log and ~/stderr.log to ensure nothing requires your attention, and then run the command: shutdown -r now"
+dialog --stdout --backtitle "Arch-Linux Installer" --title "Installation Complete" --msgbox "Installation complete. Please examine the contents of ~/stdout.log and ~/stderr.log to ensure nothing requires your attention, and then run the command: shutdown -r now" 0 0
