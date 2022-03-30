@@ -7,6 +7,8 @@ pacman -Sy
 pacman -S --noconfirm dialog
 clear
 
+dialog --stdout --backtitle "Arch-Linux Installer" --title "Welcome" --msgbox "This tool requires a custom package server hosting dhester-base. Please ensure it is turned on and accessible over the network."
+
 packageServer=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of the package server?" 0 0) || exit 1
 clear
 : ${packageServer:?"IP address must be provided."}
