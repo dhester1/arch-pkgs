@@ -99,8 +99,8 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
-	parted --script "$device" \
-	--mklabel gpt \ 
+	parted --script "$device" -- \
+	mklabel gpt \ 
 	mkpart ESP fat32 1 500 \
 	set 1 boot on \
 	mkpart primary linux-swap 500 ${swap_end} \
