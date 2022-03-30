@@ -5,6 +5,11 @@ pacman -Sy
 pacman -S --noconfirm dialog
 clear
 
+package-server=$(dialog --stdotu --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of package-server.localdomain?" 0 0) || exit 1
+clear
+: ${package-server:?"IP address must be provided."}
+echo "$package-server            package-server.localdomain" >> /etc/hosts
+
 hostname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter this machine's hostname" 0 0) || exit 1
 clear
 : ${hostname:?"Hostname cannot be empty."}
