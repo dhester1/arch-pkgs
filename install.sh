@@ -1,9 +1,11 @@
 #!/bin/bash
 
 archroot () {
+	echo Setting locale information
 	ln -sf /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 	timedatectl set-timezone Australia/Sydney
 	
+	echo Updating repolists and downloading new packages
 	pacman -Syu --noconfirm
 	pacman -S --noconfirm \
 	 xorg plasma base-devel \
@@ -13,9 +15,11 @@ archroot () {
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
 	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax highlighting
 	
+	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$1"
 	chsh -s /usr/bin/zsh
 	
+	echo Installing AUR helper and packages
 	su "$1" -c "cd ~; \
 	 git clone https://aur.archlinux.org/yay.git; \
 	 cd yay; \
@@ -29,7 +33,10 @@ archroot () {
 	 pamac-all protontricks snapd soundux visual-studio-code-bin \
 	 winetricks zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
 	
+	echo Changing fingerprint information
 	chfn -f "${fullname}" "${username}"
+	
+	echo Installing bootloader
 	mount "$part_boot" /boot/efi
 	grub-install --target=x86_64-efi --bootloader-id=Arch --efi-directory=/boot/efi
 	grub-mkconfig -o /boot/grub/grub.cfg
@@ -137,7 +144,11 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
-	parted - "${device}" -- mklabel gpt mkpart ESP fat32 1 500 set 1 boot on mkpart primary linux-swap 501 ${swap_end} mkpart primary ext4 ${root_start} 100%
+	parted -s "${device}" -- mklabel gpt \
+	 mkpart ESP fat32 1 500 \
+	 mkpart primary linux-swap 501 ${swap_end} \
+	 mkpart primary ext4 ${root_start} 100% \
+	 set 1 boot on
  
 	part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 	part_swap="$(ls ${device}* | grep -E "^${device}p?2$")"
