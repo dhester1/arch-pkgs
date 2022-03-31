@@ -1,18 +1,46 @@
 #!/bin/bash
 
+archroot () {
+	ln -sf /usr/share/zoneinfo/Australia/Sydney /etc/localtime
+	timedatectl set-timezone Australia/Sydney
+	
+	pacman -Syu --noconfirm
+	pacman -S --noconfirm \
+	 xorg plasma base-devel \
+	 cifs-utils man-db man-pages alsa-utils ark bitwarden dhclient discord dolphin dolphin-plugins ffmpegthumbs firefox \
+	 gimp git gwenview kate kcron kdeconnect kdialog kget kgpg kmousetool knotes kompare konsole krdc kruler ksysguard \
+	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular reflector pulseaudio \
+	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
+	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax highlighting
+	
+	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$1"
+	chsh -s /usr/bin/zsh
+	
+	su "$1" -c "cd ~; \
+	 git clone https://aur.archlinux.org/yay.git; \
+	 cd yay; \
+	 makepkg -si --noconfirm; \
+	 cd ~; \
+	 rm -rf yay; \
+	 yay -Syu; \
+	 yay -S --noconfirm --needed \
+	 nerd-fonts-complete ttf-ms-fonts \
+	 firefox-extension-bitwarden ocs-url onlyoffice-bin \
+	 pamac-all protontricks snapd soundux visual-studio-code-bin \
+	 winetricks zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
+	
+	chfn -f "${fullname}" "${username}"
+	mount "$part_boot" /boot/efi
+	grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
+	grub-mkconfig -o /boot/grub/grub.cfg
+}
+
 timedatectl set-ntp true
 sed -i "93,94s/^#//" /etc/pacman.conf
 
 pacman -Sy
 pacman -S --noconfirm dialog
 clear
-
-dialog --stdout --backtitle "Arch-Linux Installer" --title "Welcome" --msgbox "This tool requires a custom package server hosting dhester-base. Please ensure it is turned on and accessible over the network." 0 0
-
-packageServer=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is the IP address of the package server?" 0 0) || exit 1
-clear
-: ${packageServer:?"IP address must be provided."}
-echo "$packageServer            package-server.localdomain" >> /etc/hosts
 
 hostname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter this machine's hostname" 0 0) || exit 1
 clear
@@ -99,7 +127,8 @@ else
 	exit 3
 fi
 
-swap_end=$(((swap_space*1024)+500+1))
+swap_end=$(((swap_space*1000)+501))
+root_start=$(($swap_end + 1))
 
 dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
@@ -108,8 +137,12 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
-	parted --script "${device}" -- mklabel gpt mkpart ESP fat32 1 500MiB set 1 boot on mkpart primary linux-swap 500MiB ${swap_end}MB mkpart primary ext4 ${swap_end}MB 100%
-
+	parted - "${device}" -- mklabel gpt \
+ mkpart ESP fat32 1 500 \
+ mkpart primary linux-swap 501 ${swap_end} \
+ mkpart primary ext4 ${root_start} 100% \
+ set 1 boot on
+ 
 	part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 	part_swap="$(ls ${device}* | grep -E "^${device}p?2$")"
 	part_root="$(ls ${device}* | grep -E "^${device}p?3$")"
@@ -130,13 +163,8 @@ else
 	exit 1
 fi
 
-cat <<EOF >> /etc/pacman.conf
-[dhester-base]
-SigLevel = Optional TrustAll
-Server = http://package-server.localdomain/dhester-base/
-EOF
+pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode
 
-pacstrap /mnt dhester-base
 genfstab -U /mnt >> /mnt/etc/fstab
 
 echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
@@ -144,15 +172,6 @@ echo "${hostname}" > /mnt/etc/hostname
 echo "127.0.0.1            localhost" > /mnt/etc/hosts
 echo "::1                  localhost" >> /mnt/etc/hosts
 echo "127.0.1.1            $hostname" >> /mnt/etc/hosts
-
-arch-chroot /mnt ln -sf /usr/share/zoneinfo/Australia/Sydney /etc/localtime
-arch-chroot /mnt timedatectl set-timezone Australia/Sydney
-arch-chroot /mnt useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$username"
-arch-chroot /mnt chsh -s /usr/bin/zsh
-arch-chroot /mnt chfn -f "${fullname}" "${username}"
-arch-chroot /mnt mount "$part_boot" /boot/efi
-arch-chroot /mnt grub-install --target=x86_64-efi --bootloader-id=GRUB --efi-directory=/boot/efi
-arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
 
 echo "$username:$user_password" | chpasswd --root /mnt
 echo "root:$root_password" | chpasswd --root /mnt
