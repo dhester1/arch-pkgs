@@ -1,6 +1,6 @@
 #!/bin/bash
 
-archroot () {
+archroot (){
 	echo Setting locale information
 	ln -sf /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 	timedatectl set-timezone Australia/Sydney
