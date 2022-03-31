@@ -34,7 +34,7 @@ archroot (){
 	 winetricks zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
 	
 	echo Changing fingerprint information
-	chfn -f "${fullname}" "${username}"
+	chfn -f "$2" "$1"
 	
 	echo Installing bootloader
 	mount "$part_boot" /boot/efi
@@ -173,7 +173,7 @@ fi
 pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode
 
 export -f archroot
-arch-chroot /mnt /bin/bash -c "archroot $username"
+arch-chroot /mnt /bin/bash -c "archroot $username $fullname"
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
