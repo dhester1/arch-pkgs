@@ -171,6 +171,8 @@ else
 fi
 
 pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode
+
+export -f archroot
 arch-chroot /mnt /bin/bash -c "archroot $username"
 
 genfstab -U /mnt >> /mnt/etc/fstab
