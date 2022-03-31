@@ -6,6 +6,7 @@ archroot (){
 	timedatectl set-timezone Australia/Sydney
 	
 	echo Updating repolists and downloading new packages
+	sed -i "93,94s/^#//" /etc/pacman.conf
 	pacman -Syu --noconfirm
 	pacman -S --noconfirm \
 	 xorg plasma base-devel \
