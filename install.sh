@@ -127,7 +127,7 @@ else
 	exit 3
 fi
 
-swap_end=$(((swap_space*1000)+501))
+swap_end=$((($swap_space*1000)+501))
 root_start=$(($swap_end + 1))
 
 dialog --stdout --backtitle "Arch-Linux Installer" \
@@ -160,6 +160,7 @@ else
 fi
 
 pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode
+arch-chroot /mnt /bin/bash -c "archroot $username"
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
