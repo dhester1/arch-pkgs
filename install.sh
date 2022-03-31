@@ -137,11 +137,7 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
-	parted - "$device" -- mklabel gpt \
- mkpart ESP fat32 1 500 \
- mkpart primary linux-swap 501 ${swap_end} \
- mkpart primary ext4 ${root_start} 100% \
- set 1 boot on
+	parted - "${device}" -- mklabel gpt mkpart ESP fat32 1 500 set 1 boot on mkpart primary linux-swap 501 ${swap_end} mkpart primary ext4 ${root_start} 100%
  
 	part_boot="$(ls ${device}* | grep -E "^${device}p?1$")"
 	part_swap="$(ls ${device}* | grep -E "^${device}p?2$")"
