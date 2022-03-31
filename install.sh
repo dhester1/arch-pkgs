@@ -14,7 +14,7 @@ archroot (){
 	 gimp git gwenview kate kcron kdeconnect kdialog kget kgpg kmousetool knotes kompare konsole krdc kruler ksysguard \
 	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular reflector pulseaudio \
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
-	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax highlighting
+	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax-highlighting
 	
 	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$1"
