@@ -137,7 +137,7 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
-	parted - "${device}" -- mklabel gpt \
+	parted - "$device" -- mklabel gpt \
  mkpart ESP fat32 1 500 \
  mkpart primary linux-swap 501 ${swap_end} \
  mkpart primary ext4 ${root_start} 100% \
