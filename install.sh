@@ -19,6 +19,7 @@ archroot (){
 	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular pulseaudio \
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
 	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax-highlighting
+	pacman -Rs --noconfirm discover
 	
 	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$username"
@@ -37,10 +38,10 @@ archroot (){
 	 cd ~; \
 	 rm -rf yay; \
 	 yay -Syu; \
-	 yay -S --noconfirm --needed \
+	 yay -S --noconfirm \
 	 nerd-fonts-complete ttf-ms-fonts \
-	 firefox-extension-bitwarden ocs-url onlyoffice-bin \
-	 protontricks snapd soundux visual-studio-code-bin \
+	 authy firefox-extension-bitwarden ocs-url onlyoffice-bin \
+	 pamac-aur protontricks snapd soundux visual-studio-code-bin \
 	 winetricks zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
 	
 	echo Changing fingerprint information
