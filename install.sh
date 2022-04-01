@@ -22,7 +22,7 @@ archroot (){
 	 gimp git gwenview kate kcron kdeconnect kdialog kget kgpg kmousetool knotes kompare konsole krdc kruler ksysguard \
 	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular pulseaudio \
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
-	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax-highlighting
+	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh
 	
 	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$username"
@@ -45,7 +45,7 @@ archroot (){
 	 nerd-fonts-complete ttf-ms-fonts \
 	 authy firefox-extension-bitwarden ocs-url onlyoffice-bin \
 	 pamac-aur protontricks soundux visual-studio-code-bin \
-	 winetricks oh-my-zsh-git zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
+	 winetricks oh-my-zsh-git"
 	
 	echo Changing fingerprint information
 	chfn -f "$fullname" "$username"
