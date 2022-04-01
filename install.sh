@@ -12,13 +12,14 @@ archroot (){
 	 xorg plasma base-devel \
 	 cifs-utils man-db man-pages alsa-utils ark bitwarden dhclient discord dolphin dolphin-plugins ffmpegthumbs firefox \
 	 gimp git gwenview kate kcron kdeconnect kdialog kget kgpg kmousetool knotes kompare konsole krdc kruler ksysguard \
-	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular reflector pulseaudio \
+	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular pulseaudio \
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
 	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax-highlighting
 	
 	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$1"
 	chsh -s /usr/bin/zsh
+	echo "$1 ALL=(ALL:ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 	
 	echo Installing AUR helper and packages
 	su "$1" -c "cd ~; \
@@ -38,7 +39,7 @@ archroot (){
 	chfn -f "$2" "$1"
 	
 	echo Installing bootloader
-	mount "$part_boot" /boot/efi
+	mount $3 /boot/efi
 	grub-install --target=x86_64-efi --bootloader-id=Arch --efi-directory=/boot/efi
 	grub-mkconfig -o /boot/grub/grub.cfg
 }
@@ -171,10 +172,11 @@ else
 	exit 1
 fi
 
-pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode
+pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode reflector
+systemctl start reflector
 
 export -f archroot
-arch-chroot /mnt /bin/bash -c "archroot $username $fullname"
+arch-chroot /mnt /bin/bash -c "archroot $username $fullname $part_boot"
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
