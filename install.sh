@@ -1,6 +1,10 @@
 #!/bin/bash
 
 archroot (){
+	username="$1"
+	fullname="$2 $3"
+	boot_dir="$4"
+	
 	echo Setting locale information
 	ln -sf /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 	timedatectl set-timezone Australia/Sydney
@@ -17,12 +21,12 @@ archroot (){
 	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax-highlighting
 	
 	echo Adding new user
-	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$1"
+	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$username"
 	chsh -s /usr/bin/zsh
-	echo "$1 ALL=(ALL:ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
+	echo "$username ALL=(ALL:ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 	
 	echo Installing AUR helper and packages
-	su "$1" -c "cd ~; \
+	su "$username" -c "cd ~; \
 	 git clone https://aur.archlinux.org/yay.git; \
 	 cd yay; \
 	 makepkg -si --noconfirm; \
@@ -36,10 +40,10 @@ archroot (){
 	 winetricks zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
 	
 	echo Changing fingerprint information
-	chfn -f "$2" "$1"
+	chfn -f "$fullname" "$username"
 	
 	echo Installing bootloader
-	mount $3 /boot/efi
+	mount "$boot_dir" /boot/efi
 	grub-install --target=x86_64-efi --bootloader-id=Arch --efi-directory=/boot/efi
 	grub-mkconfig -o /boot/grub/grub.cfg
 }
@@ -176,7 +180,7 @@ pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode reflector
 systemctl start reflector
 
 export -f archroot
-arch-chroot /mnt /bin/bash -c "archroot $username $fullname $part_boot"
+arch-chroot /mnt /bin/bash -c "archroot $username ${fullname} $part_boot"
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
