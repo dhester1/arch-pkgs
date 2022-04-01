@@ -19,11 +19,16 @@ archroot (){
 	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular pulseaudio \
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
 	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh zsh-syntax-highlighting
+	pacman -Rs --noconfirm discover
 	
 	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$username"
 	chsh -s /usr/bin/zsh
 	echo "$username ALL=(ALL:ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
+	
+	echo Enabling KDE
+	systemctl enable sddm
+	systemctl enable NetworkManager
 	
 	echo Installing AUR helper and packages
 	su "$username" -c "cd ~; \
