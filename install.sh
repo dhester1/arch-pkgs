@@ -45,7 +45,7 @@ archroot (){
 	 nerd-fonts-complete ttf-ms-fonts \
 	 authy firefox-extension-bitwarden ocs-url onlyoffice-bin \
 	 pamac-aur protontricks soundux visual-studio-code-bin \
-	 winetricks zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
+	 winetricks oh-my-zsh-git zsh-autosuggestions-git zsh-theme-powerlevel10k-git"
 	
 	echo Changing fingerprint information
 	chfn -f "$fullname" "$username"
