@@ -154,7 +154,7 @@ root_start=$(($swap_end + 1))
 dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
 --colors \
---yesno "\Zb\Z5=== WARNING ===\Zn\nProceeding will format ${device} and erase all data on that drive.\n\nPress Yes to continue, or No to back your data up first." 0 0
+--yesno "\Zb\Z1=== WARNING ===\Zn\nProceeding will format ${device} and erase all data on that drive.\n\nPress Yes to continue, or No to back your data up first." 0 0
 confirm_format=$?
 
 if [ "$confirm_format" -eq 0 ]; then
