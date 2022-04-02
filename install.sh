@@ -43,7 +43,7 @@ archroot (){
 	 yay -Syu; \
 	 yay -S --noconfirm \
 	 nerd-fonts-complete ttf-ms-fonts \
-	 authy firefox-extension-bitwarden ocs-url onlyoffice-bin \
+	 authy bottles firefox-extension-bitwarden ocs-url onlyoffice-bin \
 	 pamac-aur protontricks soundux visual-studio-code-bin \
 	 winetricks oh-my-zsh-git"
 	
