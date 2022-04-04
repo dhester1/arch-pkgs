@@ -24,16 +24,15 @@ archroot (){
 	 gimp git gwenview kate kcron kdeconnect kdialog kget kgpg kmousetool knotes kompare konsole krdc kruler ksysguard \
 	 ksystemlog ktorrent kwalletmanager kvantum libdbusmenu-glib nano neofetch ntfs-3g okular pulseaudio \
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
-	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh
-	
-	curl -o skel.tar.gz https://filedn.com/lQ8zQmQjsI6Xso40sDFKgff/skel.tar.gz
-	tar --overwrite -xf skel.tar.gz /home/${username}/
-	
+	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh	
 	
 	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$username"
 	chsh -s /usr/bin/zsh
 	echo "$username ALL=(ALL:ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
+	
+	curl -o skel.tar.gz https://filedn.com/lQ8zQmQjsI6Xso40sDFKgff/skel.tar.gz
+	tar --overwrite -xf skel.tar.gz -C /home/${username}/
 	
 	echo Enabling KDE
 	systemctl enable sddm
