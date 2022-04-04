@@ -27,7 +27,7 @@ archroot (){
 	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh
 	
 	curl -o skel.tar.gz https://filedn.com/lQ8zQmQjsI6Xso40sDFKgff/skel.tar.gz
-	tar -xf --overwrite skel.tar.gz /home/${username}/
+	tar --overwrite -xf skel.tar.gz /home/${username}/
 	
 	
 	echo Adding new user
