@@ -6,8 +6,10 @@ archroot (){
 	boot_dir="$4"
 	
 	echo Setting locale information
-	ln -sf /usr/share/zoneinfo/Australia/Sydney /etc/localtime
 	timedatectl set-timezone Australia/Sydney
+	echo "LANG=en_AU.UTF-8
+	LANGUAGE=en_AU:en_GB:en_US" > locale.conf
+	locale-gen
 	
 	echo Updating repolists and downloading new packages
 	sed -i "93,94s/^#//" /etc/pacman.conf
