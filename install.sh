@@ -202,7 +202,6 @@ arch-chroot /mnt /bin/bash -c "archroot $username ${fullname} $part_boot"
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-echo "LANG=en_GB.UTF-8" > /mnt/etc/locale.conf
 echo "${hostname}" > /mnt/etc/hostname
 echo "127.0.0.1            localhost" > /mnt/etc/hosts
 echo "::1                  localhost" >> /mnt/etc/hosts
