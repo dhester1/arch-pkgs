@@ -54,7 +54,7 @@ archroot (){
 	 git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting; \
 	 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k; \
 	sed -i '/^ZSH_THEME=/s/robbyrussell/powerlevel10k\/powerlevel10k/' ~/.zshrc; \
-	sed -i '/^plugins=/s/git/git zsh-autosuggestions zsh-syntax-highlighting/' ~/.zshrc; \"
+	sed -i '/^plugins=/s/git/git zsh-autosuggestions zsh-syntax-highlighting/' ~/.zshrc;"
 	
 	echo Changing fingerprint information
 	chfn -f "$fullname" "$username"
