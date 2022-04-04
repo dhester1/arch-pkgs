@@ -24,6 +24,10 @@ archroot (){
 	 pulseaudio-alsa pulseaudio-bluetooth sof-firmware spectacle steam sudo sweeper tk ufw usb_modeswitch usbmuxd \
 	 usbutils vkd3d vlc wine wine-gecko wine-mono zeroconf-ioslave zsh
 	
+	curl -o skel.tar.gz https://filedn.com/lQ8zQmQjsI6Xso40sDFKgff/skel.tar.gz
+	tar -xf --overwrite skel.tar.gz /home/${username}/
+	
+	
 	echo Adding new user
 	useradd -mU -s /usr/bin/zsh -G wheel,uucp,video,audio,storage,games,input "$username"
 	chsh -s /usr/bin/zsh
@@ -44,8 +48,13 @@ archroot (){
 	 yay -S --noconfirm \
 	 nerd-fonts-complete ttf-ms-fonts \
 	 authy bottles firefox-extension-bitwarden ocs-url onlyoffice-bin \
-	 pamac-aur protontricks soundux visual-studio-code-bin \
-	 winetricks oh-my-zsh-git"
+	 pamac-aur protontricks soundux visual-studio-code-bin winetricks; \
+	 sh -c \"$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)\" \"\" --unattended; \
+	 git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions; \
+	 git clone https://github.com/zsh-users/zsh-syntax-highlighting ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting; \
+	 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k; \
+	sed -i '/^ZSH_THEME=/s/robbyrussell/powerlevel10k\/powerlevel10k/' ~/.zshrc; \
+	sed -i '/^plugins=/s/git/git zsh-autosuggestions zsh-syntax-highlighting/' ~/.zshrc; \"
 	
 	echo Changing fingerprint information
 	chfn -f "$fullname" "$username"
