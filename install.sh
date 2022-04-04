@@ -32,7 +32,7 @@ archroot (){
 	echo "$username ALL=(ALL:ALL) NOPASSWD: ALL" | EDITOR="tee -a" visudo
 	
 	curl -o skel.tar.gz https://filedn.com/lQ8zQmQjsI6Xso40sDFKgff/skel.tar.gz
-	tar --overwrite -xf skel.tar.gz -C /home/${username}/
+	tar -xf skel.tar.gz -C /home/${username}/
 	
 	echo Enabling KDE
 	systemctl enable sddm
