@@ -95,6 +95,7 @@ do
 	--title "Pre-Install Config" \
 	--yesno "Use the same password for root and $username?" 0 0
 	duplicate_password=$?
+	clear
 	
 	if [ "$duplicate_password" -eq 0 ]; then
 		password_type="root and $username have the same password."
@@ -102,10 +103,11 @@ do
 		password_type="root and $username have different passwords."
 	fi
 	
-	dialog --stdout --backtitle " "\
+	dialog --stdout --backtitle "Arch-Linux Installer"\
 	--title "Confirm Choices" \
 	--yesno "Are the following details correct?\nComputer Name: ${hostname}\nFull Name: ${fullname}\nUsername: ${username}\nPasswords: ${password_type}" 0 0
 	valid_choices=$?
+	clear
 	
 	if [ "$valid_choices" -eq 0 ]; then
 		break
@@ -125,6 +127,7 @@ if [ "$duplicate_password" -eq 0 ]; then
 			break
 		else
 			dialog --stdout --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
+			clear
 		fi
 	done
 elif [ "$duplicate_password" -eq 1 ]; then
@@ -139,6 +142,7 @@ elif [ "$duplicate_password" -eq 1 ]; then
 			break
 		else
 			dialog --stdout --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
+			clear
 		fi
 	done
 	while [ 1 ]
@@ -152,6 +156,7 @@ elif [ "$duplicate_password" -eq 1 ]; then
 			break
 		else
 			dialog --stdout --backtitle "Arch-Linux Installer" --msgbox "The passwords did not match. Please try again." 0 0
+			clear
 		fi
 	done
 else
@@ -168,6 +173,8 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 --title "Disk Partitioning" \
 --yesno "Will hibernation be used?" 0 0
 hibernation=$?
+clear
+
 ram=$(free --giga | awk '/Mem:/ {print $2}')
 if [ "$hibernation" -eq 0 ]; then
 	swap_space=$(python -c "from math import ceil,sqrt; print(ceil(sqrt($ram)))")
@@ -185,6 +192,7 @@ dialog --stdout --backtitle "Arch-Linux Installer" \
 --colors \
 --yesno "\Zb\Z1=== WARNING ===\Zn\nProceeding will format ${device} and erase all data on that drive.\n\nPress Yes to continue, or No to back your data up first." 0 0
 confirm_format=$?
+clear
 
 if [ "$confirm_format" -eq 0 ]; then
 	parted -s "${device}" -- mklabel gpt \
@@ -209,15 +217,18 @@ if [ "$confirm_format" -eq 0 ]; then
 	mount "$part_root" /mnt
 	mkdir -p /mnt/boot/efi
 	mount "$part_boot" /mnt/boot/efi
+	clear
 else
 	exit 1
 fi
 
 pacstrap /mnt base linux linux-firmware grub efibootmgr amd-ucode reflector
 systemctl start reflector
+clear
 
 export -f archroot
 arch-chroot /mnt /bin/bash -c "archroot $username ${fullname} $part_boot"
+clear
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
@@ -252,3 +263,4 @@ echo "$username:$user_password" | chpasswd --root /mnt
 echo "root:$root_password" | chpasswd --root /mnt
 
 dialog --stdout --backtitle "Arch-Linux Installer" --title "Installation Complete" --msgbox "Installation complete.\nPlease examine the contents of stdout.log and stderr.log to ensure nothing requires your attention\n\nPlease run the command: \"shutdown -r now\" to boot into your new system." 0 0
+clear
