@@ -74,25 +74,42 @@ pacman -Sy
 pacman -S --noconfirm dialog
 clear
 
-hostname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter this machine's hostname" 0 0) || exit 1
-clear
-: ${hostname:?"Hostname cannot be empty."}
+while [ 1 ]
+do
+	hostname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter this machine's hostname" 0 0) || exit 1
+	clear
+	: ${hostname:?"Hostname cannot be empty."}
 
-fullname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is your full name?" 0 0) || exit 1
-clear
-: ${fullname:?"Name cannot be empty."}
+	fullname=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "What is your full name?" 0 0) || exit 1
+	clear
+	: ${fullname:?"Name cannot be empty."}
 
-username=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter your username" 0 0) || exit 1
-clear
-: ${username:?"Username cannot be empty."}
+	username=$(dialog --stdout --backtitle "Arch-Linux Installer" --title "Pre-Install Config" --inputbox "Enter your username" 0 0) || exit 1
+	clear
+	: ${username:?"Username cannot be empty."}
 
-user_password=""
-root_password=""
+	user_password=""
+	root_password=""
 
-dialog --stdout --backtitle "Arch-Linux Installer" \
---title "Pre-Install Config" \
---yesno "Use the same password for root and $username?" 0 0
-duplicate_password=$?
+	dialog --stdout --backtitle "Arch-Linux Installer" \
+	--title "Pre-Install Config" \
+	--yesno "Use the same password for root and $username?" 0 0
+	duplicate_password=$?
+	
+	if [ "$duplicate_password" -eq 0 ]; then
+		password_type="root and $username have the same password."
+	else
+		password_type="root and $username have different passwords."
+	fi
+	
+	dialog --stdout --backtitle " "\
+	--title "Confirm Choices" \
+	--yesno "Are the following details correct?\nComputer Name: ${hostname}\nFull Name: ${fullname}\nUsername: ${username}\nPasswords: ${password_type}" 0 0
+	valid_choices=$?
+	
+	if [ "$valid_choices" -eq 0 ]; then
+		break
+done
 
 if [ "$duplicate_password" -eq 0 ]; then
 	while [ 1 ]
