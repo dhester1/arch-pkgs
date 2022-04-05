@@ -216,19 +216,19 @@ curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/fonts/MesloLGS%20
 curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/fonts/MesloLGS%20NF%20Italic.ttf -o /mnt/usr/local/share/fonts/MesloLGS\ NF\ Italic.ttf
 curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/fonts/MesloLGS%20NF%20Regular.ttf -o /mnt/usr/local/share/fonts/MesloLGS\ NF\ Regular.ttf
 
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/sddm/sddm1.png -o /mnt/usr/share/wallpapers/Custom/SDDM/sddm1.png
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/sdmm/sddm2.png -o /mnt/usr/share/wallpapers/Custom/SDDM/sddm2.png
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall1.jpg -o /mnt/usr/share/wallpapers/Custom/wall1.jpg
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall2.jpg -o /mnt/usr/share/wallpapers/Custom/wall2.jpg
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall3.png -o /mnt/usr/share/wallpapers/Custom/wall3.png
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall4.jpg -o /mnt/usr/share/wallpapers/Custom/wall4.jpg
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall5.png -o /mnt/usr/share/wallpapers/Custom/wall5.png
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall6.png -o /mnt/usr/share/wallpapers/Custom/wall6.png
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall7.jpg -o /mnt/usr/share/wallpapers/Custom/wall7.jpg
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall8.jpg -o /mnt/usr/share/wallpapers/Custom/wall8.jpg
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall9.jpg -o /mnt/usr/share/wallpapers/Custom/wall9.jpg
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall10.jpg -o /mnt/usr/share/wallpapers/Custom/wall10.jpg
-curl https://raw.githubusercontent.com/dhester1/arch-pkgs/main/wallpapers/wall11.png -o /mnt/usr/share/wallpapers/Custom/wall11.png
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/sddm/sddm1.png -o /mnt/usr/share/wallpapers/Custom/SDDM/sddm1.png
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/sddm/sddm2.png -o /mnt/usr/share/wallpapers/Custom/SDDM/sddm2.png
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall1.jpg -o /mnt/usr/share/wallpapers/Custom/wall1.jpg
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall2.jpg -o /mnt/usr/share/wallpapers/Custom/wall2.jpg
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall3.png -o /mnt/usr/share/wallpapers/Custom/wall3.png
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall4.jpg -o /mnt/usr/share/wallpapers/Custom/wall4.jpg
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall5.png -o /mnt/usr/share/wallpapers/Custom/wall5.png
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall6.png -o /mnt/usr/share/wallpapers/Custom/wall6.png
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall7.jpg -o /mnt/usr/share/wallpapers/Custom/wall7.jpg
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall8.jpg -o /mnt/usr/share/wallpapers/Custom/wall8.jpg
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall9.jpg -o /mnt/usr/share/wallpapers/Custom/wall9.jpg
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall10.jpg -o /mnt/usr/share/wallpapers/Custom/wall10.jpg
+curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall11.png -o /mnt/usr/share/wallpapers/Custom/wall11.png
 
 echo "$username:$user_password" | chpasswd --root /mnt
 echo "root:$root_password" | chpasswd --root /mnt
