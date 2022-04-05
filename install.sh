@@ -233,4 +233,4 @@ curl https://github.com/dhester1/arch-pkgs/raw/main/wallpapers/wall11.png -o /mn
 echo "$username:$user_password" | chpasswd --root /mnt
 echo "root:$root_password" | chpasswd --root /mnt
 
-dialog --stdout --backtitle "Arch-Linux Installer" --title "Installation Complete" --msgbox "Installation complete. Please examine the contents of ~/stdout.log and ~/stderr.log to ensure nothing requires your attention, and then run the command: shutdown -r now" 0 0
+dialog --stdout --backtitle "Arch-Linux Installer" --title "Installation Complete" --msgbox "Installation complete.\nPlease examine the contents of stdout.log and stderr.log to ensure nothing requires your attention\n\nPlease run the command: \"shutdown -r now\" to boot into your new system." 0 0
