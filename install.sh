@@ -9,6 +9,7 @@ archroot (){
 	timedatectl set-timezone Australia/Sydney
 	echo "LANG=en_AU.UTF-8
 	LANGUAGE=en_AU:en_GB:en_US" > locale.conf
+	sed -i "/en_AU.UTF-8/s/^#//" /etc/locale.gen
 	locale-gen
 	
 	echo Updating repolists and downloading new packages
