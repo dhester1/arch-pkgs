@@ -109,6 +109,7 @@ do
 	
 	if [ "$valid_choices" -eq 0 ]; then
 		break
+	fi
 done
 
 if [ "$duplicate_password" -eq 0 ]; then
