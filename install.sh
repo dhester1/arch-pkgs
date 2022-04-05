@@ -43,7 +43,7 @@ archroot (){
 	 makepkg -si --noconfirm; \
 	 cd ~; \
 	 rm -rf yay; \
-	 yay -Syu; \
+	 yay -Syu -- noconfirm; \
 	 yay -S --noconfirm \
 	 nerd-fonts-complete ttf-ms-fonts \
 	 authy bottles firefox-extension-bitwarden ocs-url onlyoffice-bin \
